@@ -29,7 +29,7 @@
 
 [ routes ]
 
-- /404.ejs - error page of saying url is not found
+- /404 - error page of saying url is not found
 - /products - to show all products
 
 [ api ]
