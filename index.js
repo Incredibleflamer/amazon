@@ -58,7 +58,7 @@ app.post("/api/productinfo:productname", async (req, res) => {});
 //==================== routes ====================
 // main page
 app.get("/", async (req, res) => {});
-//==================== admin page routes ====================
+//==================== admin page api ====================
 // function to check logged in or not
 const checkAdminAuth = (req, res, next) => {
   if (req.session.user === "admin" && req.session.password === "1234") {
@@ -97,6 +97,9 @@ app.post("/login", async (req, res) => {
     });
   }
 });
+// post request for adding product to database
+app.post("/api/productadd", async (req, res) => {});
+//==================== admin page routes ====================
 // admin page
 app.get("/admin", async (req, res) => {
   if (req.session.user === "admin" && req.session.password === "1234") {
@@ -117,9 +120,13 @@ app.get("/admin_logout", async (req, res) => {
 app.get("/dashboard", async (req, res) => {
   res.render("pages/dashboard.ejs");
 });
+// product add
+app.get("/productadd", async (req, res) => {
+  res.render("pages/newproductadd.ejs");
+});
 // error page
 app.get("*", async (req, res) => {
-  res.render("pages/404.ejs", {});
+  res.render("pages/404.ejs");
 });
 //==================== starting express server ====================
 app.listen(config.port, () => {

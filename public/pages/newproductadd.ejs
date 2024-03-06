@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="content-type" />
+    <meta charset="utf-8" />
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f8f9fa;
+        color: #495057;
+        margin: 0;
+        padding: 0;
+      }
+
+      .productadd_container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+        width: 50%;
+        margin: 20px auto;
+      }
+
+      .productadd_h2 {
+        color: #333;
+        text-align: center;
+      }
+
+      .productadd_form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .productadd_label {
+        margin-top: 10px;
+      }
+
+      .productadd_input,
+      .productadd_select {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        margin-bottom: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+
+      .productadd_button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      .productadd_button:hover {
+        background-color: #0056b3;
+      }
+
+      .w3-container {
+        position: relative;
+      }
+    </style>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+  </head>
+  <body>
+    <!-- form -->
+    <div class="productadd_container">
+      <div
+        class="w3-container w3-pale-red"
+        style="display: none"
+        id="errorContainer"
+      ></div>
+
+      <form
+        id="productAddForm"
+        class="productadd_form"
+        action="/Admin/NewProductAdd"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <!-- product name -->
+        <label for="name">Product Name:</label>
+        <input type="text" name="name" required />
+
+        <!-- Product Image -->
+        <label for="productImage" class="productadd_label"
+          >Product Image:</label
+        >
+        <input
+          type="file"
+          id="productImage"
+          name="productImage"
+          class="productadd_input"
+          accept="image/*"
+          required
+        />
+
+        <!-- Description -->
+        <label for="description" class="productadd_label"
+          >Product Description:</label
+        >
+        <textarea
+          name="description"
+          class="productadd_input"
+          rows="4"
+        ></textarea>
+
+        <!-- Type (Pre-defined) -->
+        <label for="type" class="productadd_label">Product Type:</label>
+        <select name="type" id="type" class="productadd_select" required>
+          <option value="Handmade">Handmade</option>
+          <option value="Minimalist">Minimalist</option>
+          <option value="Bridal">Bridal</option>
+        </select>
+
+        <label for="category" class="productadd_label">Product Category:</label>
+        <select
+          name="category"
+          id="category"
+          class="productadd_select"
+          required
+        ></select>
+        <button type="submit" class="productadd_button">Add Product</button>
+      </form>
+    </div>
+
+    <!--  -->
+    <script>
+      document.getElementById("type").addEventListener("change", function () {
+        var type = this.value;
+        var categoryDropdown = document.getElementById("category");
+
+        categoryDropdown.innerHTML = "";
+
+        switch (type) {
+          case "Handmade":
+            addOption(categoryDropdown, "Earrings", "Earrings");
+            addOption(categoryDropdown, "Rings", "Rings");
+            addOption(categoryDropdown, "Bracelet", "Bracelet");
+            addOption(categoryDropdown, "Hatpan", "Hatpan");
+            break;
+          case "Minimalist":
+            addOption(categoryDropdown, "Earrings", "Earrings");
+            addOption(categoryDropdown, "Rings", "Rings");
+            addOption(categoryDropdown, "Bracelet", "Bracelet");
+            addOption(categoryDropdown, "Necklace", "Necklace");
+            break;
+          case "Bridal":
+            break;
+          default:
+            break;
+        }
+      });
+
+      function addOption(dropdown, value, text) {
+        var option = document.createElement("option");
+        option.value = value;
+        option.text = text;
+        dropdown.add(option);
+      }
+
+      const typeDropdown = document.getElementById("type");
+      typeDropdown.value = "Handmade";
+      typeDropdown.dispatchEvent(new Event("change"));
+
+      document
+        .getElementById("productAddForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const formData = new FormData(this);
+
+          const productName = formData.get("name");
+          const description = formData.get("description");
+          const productType = formData.get("type");
+          const productCategory = formData.get("category");
+
+          try {
+            const response = await fetch("/Admin/NewProductAdd", {
+              method: "POST",
+              body: formData,
+            });
+
+            if (response.ok) {
+              window.location.href = "/Dashboard";
+            } else {
+              const data = await response.json();
+              if (data.error) {
+                displayErrorMessage(data.error);
+              } else {
+                displayErrorMessage("An unexpected error occurred.");
+              }
+            }
+          } catch (error) {
+            const errorMessage =
+              error.message || "An unexpected error occurred.";
+            displayErrorMessage(errorMessage);
+          }
+
+          function displayErrorMessage(message) {
+            const errorContainer = document.getElementById("errorContainer");
+            errorContainer.innerHTML = message;
+            errorContainer.style.display = "block";
+          }
+        });
+    </script>
+    <script src="../designer/js/jquery.min.js"></script>
+    <script src="../designer/js/bootstrap.js"></script>
+    <script src="../designer/js/wow.min.js"></script>
+    <script src="../designer/js/slick.min.js"></script>
+    <script src="../designer/js/slick-animation.min.js"></script>
+    <script src="../designer/js/jquery.validate.min.js"></script>
+    <script src="../designer/js/switcher.js"></script>
+    <script src="../designer/js/themes.js"></script>
+    <script src="../designer/js/jquery.fancybox.pack.js"></script>
+  </body>
+</html>
