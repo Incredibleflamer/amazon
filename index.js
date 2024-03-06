@@ -20,6 +20,12 @@ mongoose
   .catch((err) => console.log("Error connecting to MongoDB:", err));
 
 const { product_add, product_fetch } = require("./functions/database");
+const {
+  create_user,
+  user_info,
+  cart_add,
+  cart_remove,
+} = require("./functions/user");
 //==================== setting up middle ware ====================
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -114,20 +120,39 @@ app.post("/api/productadd", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-// api for creating new user
-app.post("/api/create/user", async (req, res) => {});
+// api for signup
+app.post("/api/user/signup", async (req, res) => {
+  const { username, email, password } = req.body;
+  try {
+    const user = await create_user(username, email, password);
+    req.session.userid = user;
+    res.redirect("/");
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+// api for login
+app.post("/api/user/login", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const userId = await find_user(email, password);
+    req.session.userid = userId;
+    res.redirect("/");
+  } catch (err) {
+    res.status(401).json({ error: err.message });
+  }
+});
 // api for fetching user info
 app.post("/api/fetch/user", async (req, res) => {});
 // api for cart add
 app.post("/api/cart/add", async (req, res) => {});
 // api for cart remove
-app.post("/api/cart/add", async (req, res) => {});
+app.post("/api/cart/remove", async (req, res) => {});
 // api for cart fetch
-app.post("/api/cart/add", async (req, res) => {});
-//==================== routes ====================
+app.post("/api/cart/fetch", async (req, res) => {});
+//==================== public page routes ====================
 // main page
 app.get("/", async (req, res) => {});
-
 //==================== admin page routes ====================
 // admin page
 app.get("/admin", async (req, res) => {
@@ -170,7 +195,7 @@ app.get("/productadd", async (req, res) => {
     res.render("pages/admin_login.ejs");
   }
 });
-// error page
+//==================== error page routes ====================
 app.get("*", async (req, res) => {
   res.render("pages/404.ejs");
 });
