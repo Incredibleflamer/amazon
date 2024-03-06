@@ -1,5 +1,8 @@
 {
   "port": 8080,
   "mongodb_url": "mongodb+srv://products_test_db:MBPrPMfurexvd65R@cluster0.nzwrey3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
-  "image_api_key": "d44e1a31a60e7cc7774196785602cce0"
+  "image_api_key": "d44e1a31a60e7cc7774196785602cce0",
+  "cookie_string": "something_usefull_lol_dont_share_it_with_anyone",
+  "admin_username": "admin",
+  "admin_pass": "1234"
 }

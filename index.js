@@ -28,10 +28,10 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set("views", path.join(__dirname, "public"));
 app.use(
   session({
-    secret: "secret",
+    secret: config.cookie_string,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 },
+    cookie: { maxAge: 1000 * 60 * 60 * 24 },
   })
 );
 app.use(fileUpload());
@@ -86,6 +86,18 @@ app.post("/login", async (req, res) => {
 });
 // api for adding product to database
 app.post("/api/productadd", async (req, res) => {
+  if (
+    req.session.user !== config.admin_username ||
+    req.session.password !== config.admin_pass
+  ) {
+    res
+      .status(500)
+      .json({ error: "Username and password are missing / Invalid." });
+
+    res.status(400).send("Username and password are missing / Invalid.");
+
+    return res.redirect("/admin");
+  }
   try {
     const { name, description, category, price } = req.body;
     const images = req.files.productImage;
@@ -109,7 +121,10 @@ app.get("/", async (req, res) => {});
 //==================== admin page routes ====================
 // admin page
 app.get("/admin", async (req, res) => {
-  if (req.session.user === "admin" && req.session.password === "1234") {
+  if (
+    req.session.user === config.admin_username &&
+    req.session.password === config.admin_pass
+  ) {
     res.redirect("/dashboard");
   } else {
     res.render("pages/admin_login.ejs", {
@@ -125,11 +140,25 @@ app.get("/admin_logout", async (req, res) => {
 });
 // dashboard
 app.get("/dashboard", async (req, res) => {
-  res.render("pages/dashboard.ejs");
+  if (
+    req.session.user === config.admin_username &&
+    req.session.password === config.admin_pass
+  ) {
+    res.redirect("/dashboard");
+  } else {
+    res.render("pages/admin_login.ejs");
+  }
 });
 // product add
 app.get("/productadd", async (req, res) => {
-  res.render("pages/newproductadd.ejs");
+  if (
+    req.session.user === config.admin_username &&
+    req.session.password === config.admin_pass
+  ) {
+    res.render("pages/newproductadd.ejs");
+  } else {
+    res.render("pages/admin_login.ejs");
+  }
 });
 // error page
 app.get("*", async (req, res) => {
