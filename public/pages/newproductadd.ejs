@@ -81,7 +81,7 @@
       <form
         id="productAddForm"
         class="productadd_form"
-        action="/Admin/NewProductAdd"
+        action="/api/productadd"
         method="post"
         enctype="multipart/form-data"
       >
@@ -163,13 +163,13 @@
           const productCategory = formData.get("category");
 
           try {
-            const response = await fetch("/Admin/NewProductAdd", {
+            const response = await fetch("/admin/productadd", {
               method: "POST",
               body: formData,
             });
 
             if (response.ok) {
-              window.location.href = "/Dashboard";
+              window.location.href = "/dashboard";
             } else {
               const data = await response.json();
               if (data.error) {

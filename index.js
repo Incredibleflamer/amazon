@@ -2,6 +2,7 @@
 const express = require("express");
 const compression = require("compression");
 const session = require("express-session");
+const fileUpload = require("express-fileupload");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const fs = require("fs");
@@ -12,12 +13,13 @@ const config = JSON.parse(configData);
 const app = express();
 //==================== mongodb ====================
 const mongoose = require("mongoose");
-const { productSchema } = require("./schema/products");
-const Product = mongoose.model("Product", productSchema);
+
 mongoose
   .connect(config.mongodb_url)
   .then(() => console.log("The Website is now connected to mongodb"))
   .catch((err) => console.log("Error connecting to MongoDB:", err));
+
+const { product_add, product_fetch } = require("./functions/database");
 //==================== setting up middle ware ====================
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,6 +34,7 @@ app.use(
     cookie: { secure: false, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 },
   })
 );
+app.use(fileUpload());
 // importing footer and navbar
 app.use(async (req, res, next) => {
   const navbar = await import_middle_ware("navbar");
@@ -47,27 +50,11 @@ async function import_middle_ware(page) {
   return pageContent;
 }
 //==================== api ====================
-// api product add
-app.post("/api/productadd", async (req, res) => {});
-// api product remove
-app.post("/api/productremove", async (req, res) => {});
 // api product list
 app.post("/api/products", async (req, res) => {});
 // api product info
 app.post("/api/productinfo:productname", async (req, res) => {});
-//==================== routes ====================
-// main page
-app.get("/", async (req, res) => {});
-//==================== admin page api ====================
-// function to check logged in or not
-const checkAdminAuth = (req, res, next) => {
-  if (req.session.user === "admin" && req.session.password === "1234") {
-    next();
-  } else {
-    res.redirect("/admin");
-  }
-};
-// post request for checking pass and username
+// api for checking pass and username
 app.post("/login", async (req, res) => {
   let Username = req.body.Username;
   let password = req.body.password;
@@ -97,8 +84,28 @@ app.post("/login", async (req, res) => {
     });
   }
 });
-// post request for adding product to database
-app.post("/api/productadd", async (req, res) => {});
+// api for adding product to database
+app.post("/api/productadd", async (req, res) => {
+  try {
+    const { name, description, category, price } = req.body;
+    const images = req.files.productImage;
+    await product_add(
+      name,
+      images,
+      description,
+      category,
+      price,
+      config.image_api_key
+    );
+    res.redirect("/dashboard");
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+//==================== routes ====================
+// main page
+app.get("/", async (req, res) => {});
+
 //==================== admin page routes ====================
 // admin page
 app.get("/admin", async (req, res) => {
