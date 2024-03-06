@@ -57,7 +57,21 @@ async function upload_image_to_database(imageBuffer, imagename, api_key) {
   }
 }
 
-async function product_fetch() {}
-async function get_all_products() {}
+async function get_all_products() {
+  return await Product.find({});
+}
+
+async function get_product_by_name(name) {
+  return await Product.findOne({ name });
+}
+
+async function get_products_by_category(category) {
+  return await Product.find({ category });
+}
 //==================== exports ====================
-module.exports = { product_add, product_fetch, get_all_products };
+module.exports = {
+  product_add,
+  get_all_products,
+  get_product_by_name,
+  get_products_by_category,
+};

@@ -19,7 +19,12 @@ mongoose
   .then(() => console.log("The Website is now connected to mongodb"))
   .catch((err) => console.log("Error connecting to MongoDB:", err));
 
-const { product_add, product_fetch } = require("./functions/database");
+const {
+  product_add,
+  get_all_products,
+  get_product_by_name,
+  get_products_by_category,
+} = require("./functions/database");
 const {
   create_user,
   user_info,
@@ -57,9 +62,16 @@ async function import_middle_ware(page) {
 }
 //==================== api ====================
 // api product list
-app.post("/api/products", async (req, res) => {});
+app.post("/api/products", async (req, res) => {
+  const productdata = await get_all_products();
+  res.render("pages/products.ejs", { products: productdata });
+});
 // api product info
-app.post("/api/productinfo:productname", async (req, res) => {});
+app.post("/api/productinfo:productname", async (req, res) => {
+  const productName = req.params.productname;
+  const productdata = await get_product_by_name(productName);
+  res.render("pages/productinfo.ejs", { product: productdata });
+});
 // api for checking pass and username
 app.post("/login", async (req, res) => {
   let Username = req.body.Username;
@@ -145,14 +157,46 @@ app.post("/api/user/login", async (req, res) => {
 // api for fetching user info
 app.post("/api/fetch/user", async (req, res) => {});
 // api for cart add
-app.post("/api/cart/add", async (req, res) => {});
+app.post("/api/cart/add", async (req, res) => {
+  userId = req.session.userid;
+  if (!userId) {
+    res.redirect("/login");
+  }
+  const { productName, quantity } = req.body;
+  try {
+    await cart_add(userId, productName, quantity);
+    res.status(200).json({ message: "Item added to cart successfully." });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 // api for cart remove
-app.post("/api/cart/remove", async (req, res) => {});
+app.post("/api/cart/remove", async (req, res) => {
+  userId = req.session.userid;
+  if (!userId) {
+    res.redirect("/login");
+  }
+  const { productName } = req.body;
+  try {
+    await cart_remove(userId, productName);
+    res.status(200).json({ message: "Item removed from cart successfully." });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 // api for cart fetch
 app.post("/api/cart/fetch", async (req, res) => {});
 //==================== public page routes ====================
 // main page
 app.get("/", async (req, res) => {});
+// login
+app.get("/login", async (req, res) => {
+  res.render("pages/login.ejs");
+});
+// signup
+app.get("/signup", async (req, res) => {
+  res.render("pages/signup.ejs");
+});
 //==================== admin page routes ====================
 // admin page
 app.get("/admin", async (req, res) => {

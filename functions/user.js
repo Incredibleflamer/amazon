@@ -16,9 +16,33 @@ async function user_info(userId) {
   return await user.findOne({ _id: userId });
 }
 
-async function cart_add() {}
+async function cart_add(userId, productName, quantity) {
+  try {
+    const foundUser = await user.findById(userId);
+    if (!foundUser) {
+      throw new Error("User not found.");
+    }
+    foundUser.cart.push({ productName: productName, quantity: quantity });
+    await foundUser.save();
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
 
-async function cart_remove() {}
+async function cart_remove(userId, productName) {
+  try {
+    const foundUser = await user.findById(userId);
+    if (!foundUser) {
+      throw new Error("User not found.");
+    }
+    foundUser.cart = foundUser.cart.filter(
+      (item) => item.productName !== productName
+    );
+    await foundUser.save();
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
 
 async function find_user(email, password) {
   const userfound = await user.findOne({ email });
