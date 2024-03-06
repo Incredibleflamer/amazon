@@ -114,6 +114,16 @@ app.post("/api/productadd", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+// api for creating new user
+app.post("/api/create/user", async (req, res) => {});
+// api for fetching user info
+app.post("/api/fetch/user", async (req, res) => {});
+// api for cart add
+app.post("/api/cart/add", async (req, res) => {});
+// api for cart remove
+app.post("/api/cart/add", async (req, res) => {});
+// api for cart fetch
+app.post("/api/cart/add", async (req, res) => {});
 //==================== routes ====================
 // main page
 app.get("/", async (req, res) => {});
