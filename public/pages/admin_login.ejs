@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f4f4f4;
+      }
+
+      .container {
+        width: 300px;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .content {
+        margin-top: 50px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+      }
+
+      input.form-control {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      input.btn-primary {
+        background-color: #3498db;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      input.btn-primary:hover {
+        background-color: #2980b9;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <div class="content">
+        <form action="/login" method="POST">
+          <% if(error) { %>
+          <div class="alert alert-danger" role="alert"><%= error %></div>
+          <% } %>
+          <div class="form-group">
+            <label for="Username">Username</label>
+            <input
+              type="text"
+              class="form-control"
+              id="Username"
+              name="Username"
+              placeholder="Enter Username"
+            />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              placeholder="Password"
+            />
+          </div>
+          <div class="form-group">
+            <input type="submit" class="btn btn-lg btn-primary" value="Login" />
+          </div>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

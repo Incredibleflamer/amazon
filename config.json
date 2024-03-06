@@ -1,3 +1,4 @@
 {
-  "port": 8080
+  "port": 8080,
+  "mongodb_url": "mongodb+srv://products_test_db:MBPrPMfurexvd65R@cluster0.nzwrey3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 }
