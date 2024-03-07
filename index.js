@@ -196,7 +196,7 @@ app.get("/", async (req, res) => {
     loggedin = false;
   }
   res.render("pages/products.ejs", {
-    product: productdata,
+    products: productdata,
     loggedin: loggedin,
     user: user,
     navbar: res.locals.navbar,
