@@ -30,6 +30,7 @@ const {
   user_info,
   cart_add,
   cart_remove,
+  find_user,
 } = require("./functions/user");
 //==================== setting up middle ware ====================
 app.use(bodyParser.json());
@@ -61,11 +62,6 @@ async function import_middle_ware(page) {
   return pageContent;
 }
 //==================== api ====================
-// api product list
-app.post("/api/products", async (req, res) => {
-  const productdata = await get_all_products();
-  res.render("pages/products.ejs", { products: productdata });
-});
 // api for checking pass and username
 app.post("/login", async (req, res) => {
   let Username = req.body.Username;
@@ -134,7 +130,7 @@ app.post("/api/user/signup", async (req, res) => {
     req.session.userid = user;
     res.redirect("/");
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.redirect("/login?error=" + encodeURIComponent(err.message));
   }
 });
 // api for login
@@ -145,16 +141,23 @@ app.post("/api/user/login", async (req, res) => {
     req.session.userid = userId;
     res.redirect("/");
   } catch (err) {
-    res.status(401).json({ error: err.message });
+    res.redirect("/login?error=" + encodeURIComponent(err.message));
   }
 });
 // api for fetching user info
-app.post("/api/fetch/user", async (req, res) => {});
+app.post("/api/fetch/user", async (req, res) => {
+  if (!req.secure.userId) {
+    return res.status(401).json({ error: "User is not logged in" });
+  } else {
+    user = await user_info(req.session.userId);
+    return res.status(200).json({ user });
+  }
+});
 // api for cart add
 app.post("/api/cart/add", async (req, res) => {
   userId = req.session.userid;
   if (!userId) {
-    res.redirect("/login");
+    return res.redirect("/login");
   }
   const { productName, quantity } = req.body;
   try {
@@ -168,7 +171,7 @@ app.post("/api/cart/add", async (req, res) => {
 app.post("/api/cart/remove", async (req, res) => {
   userId = req.session.userid;
   if (!userId) {
-    res.redirect("/login");
+    return res.redirect("/login");
   }
   const { productName } = req.body;
   try {
@@ -179,7 +182,12 @@ app.post("/api/cart/remove", async (req, res) => {
   }
 });
 // api for cart fetch
-app.post("/api/cart/fetch", async (req, res) => {});
+app.post("/api/cart/fetch", async (req, res) => {
+  userId = req.session.userid;
+  if (!userId) {
+    return res.redirect("/login");
+  }
+});
 //==================== public page routes ====================
 // main page
 app.get("/", async (req, res) => {
@@ -225,11 +233,11 @@ app.get("/products", async (req, res) => {
 });
 // login
 app.get("/login", async (req, res) => {
-  res.render("pages/login.ejs", { navbar: res.locals.navbar });
+  res.render("pages/login.ejs", { navbar: res.locals.navbar, page: "login" });
 });
 // signup
 app.get("/signup", async (req, res) => {
-  res.render("pages/signup.ejs", { navbar: res.locals.navbar });
+  res.render("pages/login.ejs", { navbar: res.locals.navbar, page: "signup" });
 });
 // product info page
 app.get("/product-info/:productname", async (req, res) => {
