@@ -5,7 +5,11 @@
 ```json
 {
   "port": 8080, // port where backend and website is working
-  "mongodb_url": "url to link database"
+  "mongodb_url": "url to link database",
+  "image_api_key": "api key to upload your images to imgbb",
+  "cookie_string": "some random secure string",
+  "admin_pass": "pass you will use to login as admin",
+  "admin_username": "username you will use to login as admin"
 }
 ```
 
@@ -31,6 +35,8 @@
 
 - /404 - error page of saying url is not found
 - /products - to show all products
+- /login - login page for users
+- /signup - signup page for users
 
 [ api ]
 

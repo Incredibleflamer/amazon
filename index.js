@@ -204,7 +204,7 @@ app.get("/admin", async (req, res) => {
     req.session.user === config.admin_username &&
     req.session.password === config.admin_pass
   ) {
-    res.redirect("/dashboard");
+    res.redirect("/productadd");
   } else {
     res.render("pages/admin_login.ejs", {
       error: "",
@@ -216,17 +216,6 @@ app.get("/admin_logout", async (req, res) => {
   req.session.user = "";
   req.session.password = "";
   res.redirect("pages/admin_login.ejs");
-});
-// dashboard
-app.get("/dashboard", async (req, res) => {
-  if (
-    req.session.user === config.admin_username &&
-    req.session.password === config.admin_pass
-  ) {
-    res.redirect("/dashboard");
-  } else {
-    res.render("pages/admin_login.ejs");
-  }
 });
 // product add
 app.get("/productadd", async (req, res) => {
