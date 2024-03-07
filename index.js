@@ -199,22 +199,26 @@ app.get("/", async (req, res) => {
     product: productdata,
     loggedin: loggedin,
     user: user,
+    navbar: res.locals.navbar,
   });
 });
 // login
 app.get("/login", async (req, res) => {
-  res.render("pages/login.ejs");
+  res.render("pages/login.ejs", { navbar: res.locals.navbar });
 });
 // signup
 app.get("/signup", async (req, res) => {
-  res.render("pages/signup.ejs");
+  res.render("pages/signup.ejs", { navbar: res.locals.navbar });
 });
 // product info page
 app.get("/product-info/:productname", async (req, res) => {
   const productName = req.params.productname;
   const productdata = await get_product_by_name(productName);
   if (productdata) {
-    res.render("pages/productinfo.ejs", { product: productdata });
+    res.render("pages/productinfo.ejs", {
+      product: productdata,
+      navbar: res.locals.navbar,
+    });
   } else {
     res.redirect("/404");
   }
@@ -226,10 +230,11 @@ app.get("/admin", async (req, res) => {
     req.session.user === config.admin_username &&
     req.session.password === config.admin_pass
   ) {
-    res.redirect("/productadd");
+    res.redirect("/productadd", { navbar: res.locals.navbar });
   } else {
     res.render("pages/admin_login.ejs", {
-      error: "",
+      error: null,
+      navbar: res.locals.navbar,
     });
   }
 });
@@ -237,7 +242,7 @@ app.get("/admin", async (req, res) => {
 app.get("/admin_logout", async (req, res) => {
   req.session.user = "";
   req.session.password = "";
-  res.redirect("pages/admin_login.ejs");
+  res.redirect("pages/admin_login.ejs", { navbar: res.locals.navbar });
 });
 // product add
 app.get("/productadd", async (req, res) => {
@@ -245,14 +250,14 @@ app.get("/productadd", async (req, res) => {
     req.session.user === config.admin_username &&
     req.session.password === config.admin_pass
   ) {
-    res.render("pages/newproductadd.ejs");
+    res.render("pages/newproductadd.ejs", { navbar: res.locals.navbar });
   } else {
-    res.render("pages/admin_login.ejs");
+    res.render("pages/admin_login.ejs", { navbar: res.locals.navbar });
   }
 });
 //==================== error page routes ====================
 app.get("*", async (req, res) => {
-  res.render("pages/404.ejs");
+  res.render("pages/404.ejs", { navbar: res.locals.navbar });
 });
 //==================== starting express server ====================
 app.listen(config.port, () => {
