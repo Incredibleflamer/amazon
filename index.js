@@ -195,6 +195,27 @@ app.get("/", async (req, res) => {
   } else {
     loggedin = false;
   }
+  res.render("pages/index.ejs", {
+    products: productdata,
+    loggedin: loggedin,
+    user: user,
+    navbar: res.locals.navbar,
+  });
+});
+// products page
+app.get("/products", async (req, res) => {
+  const productdata = await get_all_products();
+  let loggedin, user;
+  if (req.session.userid) {
+    user = await user_info(req.session.userid);
+    if (user) {
+      loggedin = true;
+    } else {
+      loggedin = false;
+    }
+  } else {
+    loggedin = false;
+  }
   res.render("pages/products.ejs", {
     products: productdata,
     loggedin: loggedin,
