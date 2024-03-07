@@ -66,12 +66,6 @@ app.post("/api/products", async (req, res) => {
   const productdata = await get_all_products();
   res.render("pages/products.ejs", { products: productdata });
 });
-// api product info
-app.post("/api/productinfo:productname", async (req, res) => {
-  const productName = req.params.productname;
-  const productdata = await get_product_by_name(productName);
-  res.render("pages/productinfo.ejs", { product: productdata });
-});
 // api for checking pass and username
 app.post("/login", async (req, res) => {
   let Username = req.body.Username;
@@ -82,7 +76,7 @@ app.post("/login", async (req, res) => {
       if (password === "1234") {
         req.session.user = "admin";
         req.session.password = "1234";
-        res.redirect("/dashboard");
+        res.redirect("/productadd");
       } else {
         res.render("pages/admin_login.ejs", {
           error: "Invalid password",
@@ -188,7 +182,25 @@ app.post("/api/cart/remove", async (req, res) => {
 app.post("/api/cart/fetch", async (req, res) => {});
 //==================== public page routes ====================
 // main page
-app.get("/", async (req, res) => {});
+app.get("/", async (req, res) => {
+  const productdata = await get_all_products();
+  let loggedin, user;
+  if (req.session.userid) {
+    user = await user_info(req.session.userid);
+    if (user) {
+      loggedin = true;
+    } else {
+      loggedin = false;
+    }
+  } else {
+    loggedin = false;
+  }
+  res.render("pages/products.ejs", {
+    product: productdata,
+    loggedin: loggedin,
+    user: user,
+  });
+});
 // login
 app.get("/login", async (req, res) => {
   res.render("pages/login.ejs");
@@ -196,6 +208,16 @@ app.get("/login", async (req, res) => {
 // signup
 app.get("/signup", async (req, res) => {
   res.render("pages/signup.ejs");
+});
+// product info page
+app.get("/product-info/:productname", async (req, res) => {
+  const productName = req.params.productname;
+  const productdata = await get_product_by_name(productName);
+  if (productdata) {
+    res.render("pages/productinfo.ejs", { product: productdata });
+  } else {
+    res.redirect("/404");
+  }
 });
 //==================== admin page routes ====================
 // admin page
