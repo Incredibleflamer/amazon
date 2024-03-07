@@ -233,11 +233,44 @@ app.get("/products", async (req, res) => {
 });
 // login
 app.get("/login", async (req, res) => {
-  res.render("pages/login.ejs", { navbar: res.locals.navbar, page: "login" });
+  let loggedin, user;
+  if (req.session.userid) {
+    user = await user_info(req.session.userid);
+    if (user) {
+      loggedin = true;
+    } else {
+      loggedin = false;
+    }
+  } else {
+    loggedin = false;
+  }
+  if (loggedin) {
+    req.redirect("/");
+  } else {
+    res.render("pages/login.ejs", { navbar: res.locals.navbar, page: "login" });
+  }
 });
 // signup
 app.get("/signup", async (req, res) => {
-  res.render("pages/login.ejs", { navbar: res.locals.navbar, page: "signup" });
+  let loggedin, user;
+  if (req.session.userid) {
+    user = await user_info(req.session.userid);
+    if (user) {
+      loggedin = true;
+    } else {
+      loggedin = false;
+    }
+  } else {
+    loggedin = false;
+  }
+  if (loggedin) {
+    res.render("/");
+  } else {
+    res.render("pages/login.ejs", {
+      navbar: res.locals.navbar,
+      page: "signup",
+    });
+  }
 });
 // product info page
 app.get("/product-info/:productname", async (req, res) => {
