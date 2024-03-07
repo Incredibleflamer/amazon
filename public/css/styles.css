@@ -144,6 +144,10 @@ hr {
     padding-inline-start: 0px;
 }
 
+#carouselExampleControls{
+    height: 70%;
+}
+
 /*shop-section*/
 
 .shop-section{
