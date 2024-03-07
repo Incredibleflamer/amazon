@@ -143,3 +143,21 @@ hr {
 .footer ul{
     padding-inline-start: 0px;
 }
+
+/*shop-section*/
+
+.shop-section{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.box{
+    border: 2px solid black;
+    height: 400px;
+    width: 25%;
+    background-color: white;
+}
+
+.box-img{
+    height: 300px;
+}
