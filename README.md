@@ -5,11 +5,11 @@
 ```json
 {
   "port": 8080, // port where backend and website is working
-  "mongodb_url": "url to link database",
-  "image_api_key": "api key to upload your images to imgbb",
-  "cookie_string": "some random secure string",
-  "admin_pass": "pass you will use to login as admin",
-  "admin_username": "username you will use to login as admin"
+  "mongodb_url": "url to link database", // get this from mongodb
+  "image_api_key": "api key to upload your images to imgbb", // get this from imgbb
+  "cookie_string": "some random secure string", // random key can be anything
+  "admin_pass": "pass you will use to login as admin", // password
+  "admin_username": "username you will use to login as admin" // username
 }
 ```
 

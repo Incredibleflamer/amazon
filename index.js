@@ -144,15 +144,6 @@ app.post("/api/user/login", async (req, res) => {
     res.redirect("/login?error=" + encodeURIComponent(err.message));
   }
 });
-// api for fetching user info
-app.post("/api/fetch/user", async (req, res) => {
-  if (!req.secure.userId) {
-    return res.status(401).json({ error: "User is not logged in" });
-  } else {
-    user = await user_info(req.session.userId);
-    return res.status(200).json({ user });
-  }
-});
 // api for cart add
 app.post("/api/cart/add", async (req, res) => {
   userId = req.session.userid;
@@ -175,19 +166,12 @@ app.post("/api/cart/remove", async (req, res) => {
   if (!userId) {
     return res.redirect("/login");
   }
-  const { productName } = req.body;
+  const { productName, quantity } = req.body;
   try {
-    await cart_remove(userId, productName);
+    await cart_remove(userId, productName, quantity);
     res.status(200).json({ message: "Item removed from cart successfully." });
   } catch (err) {
     res.status(500).json({ error: err.message });
-  }
-});
-// api for cart fetch
-app.post("/api/cart/fetch", async (req, res) => {
-  userId = req.session.userid;
-  if (!userId) {
-    return res.redirect("/login");
   }
 });
 //==================== public page routes ====================

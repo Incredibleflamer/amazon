@@ -7,6 +7,10 @@ const { get_product_by_name } = require("./database");
 //==================== functions ====================
 
 async function create_user(username, email, password) {
+  const userexists = await user.findOne({ email: email });
+  if (userexists) {
+    throw new Error("Email already exists");
+  }
   const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = new user({ username, email, password: hashedPassword });
   await newUser.save();
@@ -50,15 +54,39 @@ async function cart_add(userId, productName, quantity) {
   }
 }
 
-async function cart_remove(userId, productName) {
+async function cart_remove(userId, productName, quantity) {
   try {
     const foundUser = await user.findById(userId);
     if (!foundUser) {
       throw new Error("User not found.");
     }
-    foundUser.cart = foundUser.cart.filter(
-      (item) => item.productName !== productName
+
+    const cartItem = foundUser.cart.find(
+      (item) => item.productName === productName
     );
+    if (!cartItem) {
+      throw new Error("Product not found in user's cart.");
+    }
+
+    if (quantity) {
+      if (quantity <= cartItem.quantity) {
+        cartItem.quantity -= quantity;
+        cartItem.amount -= cartItem.price * quantity;
+        //
+        if (cartItem.quantity <= 0) {
+          foundUser.cart = foundUser.cart.filter(
+            (item) => item.productName !== productName
+          );
+        }
+      } else {
+        throw new Error("Quantity to remove exceeds the quantity in the cart.");
+      }
+    } else {
+      foundUser.cart = foundUser.cart.filter(
+        (item) => item.productName !== productName
+      );
+    }
+
     await foundUser.save();
   } catch (error) {
     throw new Error(error.message);
