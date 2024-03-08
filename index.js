@@ -272,6 +272,29 @@ app.get("/signup", async (req, res) => {
     });
   }
 });
+// profile
+app.get("/profile", async (req, res) => {
+  let user, loggedin;
+  if (req.session.userid) {
+    user = await user_info(req.session.userid);
+    if (user) {
+      loggedin = true;
+    } else {
+      loggedin = false;
+    }
+  } else {
+    loggedin = false;
+  }
+
+  if (loggedin === false) {
+    res.redirect("/login");
+  } else {
+    res.render("pages/profile.ejs", {
+      navbar: res.locals.navbar,
+      user: user,
+    });
+  }
+});
 // product info page
 app.get("/product-info/:productname", async (req, res) => {
   const productName = req.params.productname;
