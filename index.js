@@ -231,6 +231,29 @@ app.get("/products", async (req, res) => {
     navbar: res.locals.navbar,
   });
 });
+app.get("/gateway", async (req, res) => {
+  let loggedin, user;
+  if (req.session.userid) {
+    user = await user_info(req.session.userid);
+    if (user) {
+      loggedin = true;
+    } else {
+      loggedin = false;
+    }
+  } else {
+    loggedin = false;
+  }
+
+  if (loggedin === false) {
+    res.redirect("/login");
+  } else {
+    if (user?.cart.length >= 1) {
+      res.render("pages/payment.ejs");
+    } else {
+      res.redirect("/");
+    }
+  }
+});
 // login
 app.get("/login", async (req, res) => {
   let loggedin, user;
@@ -245,7 +268,7 @@ app.get("/login", async (req, res) => {
     loggedin = false;
   }
   if (loggedin) {
-    req.redirect("/");
+    res.redirect("/");
   } else {
     res.render("pages/login.ejs", { navbar: res.locals.navbar, page: "login" });
   }
