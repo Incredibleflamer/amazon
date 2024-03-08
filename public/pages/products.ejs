@@ -16,7 +16,13 @@
   </head>
   <body>
     <%- navbar %>
-    <!-- product -->
+
+    <!-- Search bar -->
+    <div class="search_bar">
+      <input type="text" id="searchInput" placeholder="Search products..." />
+    </div>
+
+    <!-- products -->
     <% products.forEach(product => { %>
     <div class="items">
       <!-- linking whole items to product page link -->
@@ -33,5 +39,29 @@
       </a>
     </div>
     <% }); %>
+    <!-- script for search bar -->
+    <script>
+      function searchProducts() {
+        var searchText = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+
+        var productNames = document.querySelectorAll(".product_name");
+
+        productNames.forEach((productNameElement) => {
+          var productName = productNameElement.textContent.toLowerCase();
+          var item = productNameElement.closest(".items");
+          if (productName.includes(searchText)) {
+            item.style.display = "block";
+          } else {
+            item.style.display = "none";
+          }
+        });
+      }
+
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", searchProducts);
+    </script>
   </body>
 </html>
