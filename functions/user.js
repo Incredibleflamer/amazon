@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const { userSchema } = require("../schema/user");
 const user = mongoose.model("User", userSchema);
+const { get_product_by_name } = require("./database");
 //==================== functions ====================
 
 async function create_user(username, email, password) {
@@ -22,7 +23,27 @@ async function cart_add(userId, productName, quantity) {
     if (!foundUser) {
       throw new Error("User not found.");
     }
-    foundUser.cart.push({ productName: productName, quantity: quantity });
+    const productDetails = await get_product_by_name(productName);
+    if (!productDetails) {
+      throw new Error("Product not found");
+    }
+    // find product in user cart
+    const productExistInCart = foundUser.cart.findIndex(
+      (item) => item.productName === productName
+    );
+    console.log(productExistInCart);
+    if (productExistInCart !== -1) {
+      foundUser.cart[productExistInCart].quantity += quantity;
+      foundUser.cart[productExistInCart].amount +=
+        productDetails.price * quantity;
+    } else {
+      foundUser.cart.push({
+        productName: productName,
+        quantity: quantity,
+        amount: productDetails.price * quantity,
+      });
+    }
+
     await foundUser.save();
   } catch (error) {
     throw new Error(error.message);

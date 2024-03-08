@@ -33,14 +33,21 @@
 
 [ routes ]
 
+- / - home page
+- /products - shows all products
 - /404 - error page of saying url is not found
-- /products - to show all products
 - /login - login page for users
 - /signup - signup page for users
+- /profile - shows user profile
+- /gateway - payment gateway
+- /product-info/:productname - shows info about products
 
 [ api ]
 
-- none
+- /api/user/signup - handles signup requests
+- /api/user/login - handles login requests
+- /api/cart/add - handles cart add requests
+- /api/cart/remove - handles cart remove requests
 
 # common questions
 

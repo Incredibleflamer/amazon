@@ -159,9 +159,11 @@ app.post("/api/cart/add", async (req, res) => {
   if (!userId) {
     return res.redirect("/login");
   }
+  // userId = "65eacc1ad3fb4051d2c19513";
   const { productName, quantity } = req.body;
   try {
-    await cart_add(userId, productName, quantity);
+    quantitynumber = parseInt(quantity);
+    await cart_add(userId, productName, quantitynumber);
     res.status(200).json({ message: "Item added to cart successfully." });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -248,7 +250,7 @@ app.get("/gateway", async (req, res) => {
     res.redirect("/login");
   } else {
     if (user?.cart.length >= 1) {
-      res.render("pages/payment.ejs");
+      res.render("pages/payment.ejs", { user: user });
     } else {
       res.redirect("/");
     }

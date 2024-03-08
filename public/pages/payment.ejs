@@ -12,9 +12,34 @@
         width: 100vw;
         height: 100vh;
       }
+      .cart {
+        margin-bottom: 0px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      .total-amount {
+        margin-top: 20px;
+        font-weight: bold;
+      }
     </style>
   </head>
   <body>
+    <!--  -->
+
     <?xml version="1.0" encoding="utf-8"?>
     <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
     <div class="qr">
@@ -2672,5 +2697,30 @@
         </g>
       </svg>
     </div>
+    <!--  -->
+    <div class="cart">
+      <table>
+        <thead>
+          <tr>
+            <th>Index</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% let totalAmount = 0; %> <% user.cart.forEach((item, index)=> { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= item.productName %></td>
+            <td><%= item.quantity %></td>
+            <td>$<%= item.amount %></td>
+          </tr>
+          <% totalAmount += item.amount; %> <% }) %>
+        </tbody>
+      </table>
+      <p class="total-amount">Total Amount Payable: $<%= totalAmount %></p>
+    </div>
+    <!--  -->
   </body>
 </html>

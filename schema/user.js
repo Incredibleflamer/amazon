@@ -24,8 +24,12 @@ const userSchema = new Schema(
           type: Number,
           default: 1,
         },
+        amount: {
+          type: Number,
+        },
       },
     ],
+    cart_total: { type: Number },
     orders: [{ id: { type: String }, totalAmount: { type: Number } }],
   },
   { timestamps: true }
