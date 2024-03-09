@@ -21,7 +21,7 @@ async function user_info(userId) {
   return await user.findOne({ _id: userId });
 }
 
-async function cart_add(userId, productName, quantity) {
+async function cart_update(userId, productName, quantity) {
   try {
     const foundUser = await user.findById(userId);
     if (!foundUser) {
@@ -32,15 +32,22 @@ async function cart_add(userId, productName, quantity) {
       throw new Error("Product not found");
     }
     // find product in user cart
-    const productExistInCart = foundUser.cart.findIndex(
+    const productIndex = foundUser.cart.findIndex(
       (item) => item.productName === productName
     );
-    console.log(productExistInCart);
-    if (productExistInCart !== -1) {
-      foundUser.cart[productExistInCart].quantity += quantity;
-      foundUser.cart[productExistInCart].amount +=
-        productDetails.price * quantity;
+
+    if (productIndex !== -1) {
+      // If product already exists in cart
+      if (quantity === 0) {
+        // Remove product if quantity becomes 0
+        foundUser.cart.splice(productIndex, 1);
+      } else {
+        // Update quantity and amount
+        foundUser.cart[productIndex].quantity = quantity;
+        foundUser.cart[productIndex].amount = productDetails.price * quantity;
+      }
     } else {
+      // If product doesn't exist in cart, add it
       foundUser.cart.push({
         productName: productName,
         quantity: quantity,
@@ -49,45 +56,7 @@ async function cart_add(userId, productName, quantity) {
     }
 
     await foundUser.save();
-  } catch (error) {
-    throw new Error(error.message);
-  }
-}
-
-async function cart_remove(userId, productName, quantity) {
-  try {
-    const foundUser = await user.findById(userId);
-    if (!foundUser) {
-      throw new Error("User not found.");
-    }
-
-    const cartItem = foundUser.cart.find(
-      (item) => item.productName === productName
-    );
-    if (!cartItem) {
-      throw new Error("Product not found in user's cart.");
-    }
-
-    if (quantity) {
-      if (quantity <= cartItem.quantity) {
-        cartItem.quantity -= quantity;
-        cartItem.amount -= cartItem.price * quantity;
-        //
-        if (cartItem.quantity <= 0) {
-          foundUser.cart = foundUser.cart.filter(
-            (item) => item.productName !== productName
-          );
-        }
-      } else {
-        throw new Error("Quantity to remove exceeds the quantity in the cart.");
-      }
-    } else {
-      foundUser.cart = foundUser.cart.filter(
-        (item) => item.productName !== productName
-      );
-    }
-
-    await foundUser.save();
+    return productDetails.price * quantity;
   } catch (error) {
     throw new Error(error.message);
   }
@@ -105,4 +74,4 @@ async function find_user(email, password) {
   }
   return userfound._id;
 }
-module.exports = { create_user, user_info, cart_add, cart_remove, find_user };
+module.exports = { create_user, user_info, cart_update, find_user };

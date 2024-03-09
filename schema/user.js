@@ -29,7 +29,6 @@ const userSchema = new Schema(
         },
       },
     ],
-    cart_total: { type: Number },
     orders: [{ id: { type: String }, totalAmount: { type: Number } }],
   },
   { timestamps: true }
