@@ -28,8 +28,7 @@ const {
 const {
   create_user,
   user_info,
-  cart_add,
-  cart_remove,
+  cart_update,
   find_user,
 } = require("./functions/user");
 //==================== setting up middle ware ====================
@@ -145,7 +144,7 @@ app.post("/api/user/login", async (req, res) => {
   }
 });
 // api for cart add
-app.post("/api/cart/add", async (req, res) => {
+app.post("/api/cart/update", async (req, res) => {
   userId = req.session.userid;
   if (!userId) {
     return res.redirect("/login");
@@ -154,22 +153,11 @@ app.post("/api/cart/add", async (req, res) => {
   const { productName, quantity } = req.body;
   try {
     quantitynumber = parseInt(quantity);
-    await cart_add(userId, productName, quantitynumber);
-    res.status(200).json({ message: "Item added to cart successfully." });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-// api for cart remove
-app.post("/api/cart/remove", async (req, res) => {
-  userId = req.session.userid;
-  if (!userId) {
-    return res.redirect("/login");
-  }
-  const { productName, quantity } = req.body;
-  try {
-    await cart_remove(userId, productName, quantity);
-    res.status(200).json({ message: "Item removed from cart successfully." });
+    const newamount = await cart_update(userId, productName, quantitynumber);
+    res.status(200).json({
+      message: "Item added to cart successfully.",
+      newamount: newamount,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -315,6 +303,37 @@ app.get("/product-info/:productname", async (req, res) => {
     });
   } else {
     res.redirect("/404");
+  }
+});
+app.get("/cart", async (req, res) => {
+  let user, loggedin;
+  if (req.session.userid) {
+    user = await user_info(req.session.userid);
+    if (user) {
+      loggedin = true;
+    } else {
+      loggedin = false;
+    }
+  } else {
+    loggedin = false;
+  }
+  cartitemsimages = {};
+  if (user?.cart?.length > 0) {
+    for (const item of user.cart) {
+      const product = await get_product_by_name(item.productName);
+      cartitemsimages[item.productName] = product.image;
+    }
+  }
+  if (loggedin === false) {
+    res.redirect("/login");
+  } else if (cartitemsimages.length === 0) {
+    res.redirect("/");
+  } else {
+    res.render("pages/cart.ejs", {
+      navbar: res.locals.navbar,
+      user: user,
+      images: cartitemsimages,
+    });
   }
 });
 //==================== admin page routes ====================
