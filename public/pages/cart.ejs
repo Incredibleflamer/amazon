@@ -20,10 +20,10 @@
     <div class="Cart-Container">
       <div class="Header">
         <h3 class="Heading">Shopping Cart</h3>
-        <h5 class="Action">Remove all</h5>
       </div>
       <!-- cart items -->
-      <% let totalAmount = 0; %> <% user.cart.forEach(function(item, index) { %>
+      <% let totalAmount = 0, totalitems = 0; %> <%
+      user.cart.forEach(function(item, index) { %>
       <div class="Cart-Items">
         <div class="image-box">
           <img src="<%= images[item.productName] %>" style="height: 120px" />
@@ -41,7 +41,21 @@
           <div class="remove">Remove</div>
         </div>
       </div>
-      <% totalAmount += item.amount; %> <% }); %>
+      <% totalitems += item.quantity %> <% totalAmount += item.amount; %> <% });
+      %>
+      <hr />
+      <div class="checkout">
+        <div class="total">
+          <div>
+            <div class="Subtotal">Sub-Total</div>
+            <div class="items"><%= totalitems %> items</div>
+          </div>
+          <div class="”total-mount">$<%= totalAmount %></div>
+        </div>
+        <a href="/gateway">
+          <button class="button">Checkout</button>
+        </a>
+      </div>
       <!-- cart items ends -->
     </div>
     <!-- cart -->
