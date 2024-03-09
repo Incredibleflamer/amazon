@@ -326,6 +326,8 @@ app.get("/cart", async (req, res) => {
   }
   if (loggedin === false) {
     res.redirect("/login");
+  } else if (cartitemsimages.length === 0) {
+    res.redirect("/");
   } else {
     res.render("pages/cart.ejs", {
       navbar: res.locals.navbar,

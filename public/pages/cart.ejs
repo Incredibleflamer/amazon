@@ -47,8 +47,32 @@
     <!-- cart -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        const incrementButtons = document.querySelectorAll(".btn.increment");
+        const decrementButtons = document.querySelectorAll(".btn.decrement");
         const removeButtons = document.querySelectorAll(".remove");
         const apiUrl = "/api/cart/update";
+
+        function handleIncrement(event) {
+          const cartItem = event.target.closest(".Cart-Items");
+          const quantityElement = cartItem.querySelector(".count");
+          const newQuantity = getAndUpdateQuantity(quantityElement, 1);
+          sendRequestToBackend(apiUrl, {
+            productName: getProductTitle(cartItem),
+            quantity: newQuantity,
+          });
+        }
+
+        function handleDecrement(event) {
+          const cartItem = event.target.closest(".Cart-Items");
+          const quantityElement = cartItem.querySelector(".count");
+          const newQuantity = getAndUpdateQuantity(quantityElement, -1);
+          if (newQuantity >= 0) {
+            sendRequestToBackend(apiUrl, {
+              productName: getProductTitle(cartItem),
+              quantity: newQuantity,
+            });
+          }
+        }
 
         function handleRemove(event) {
           const cartItem = event.target.closest(".Cart-Items");
@@ -56,12 +80,16 @@
           sendRequestToBackend(apiUrl, {
             productName: getProductTitle(cartItem),
             quantity: 0,
-            action: "remove",
           });
         }
 
         function getProductTitle(cartItem) {
           return cartItem.querySelector(".title").textContent.trim();
+        }
+
+        function getAndUpdateQuantity(quantityElement, increment) {
+          let quantity = parseInt(quantityElement.textContent) + increment;
+          return quantity;
         }
 
         function sendRequestToBackend(url, data) {
@@ -73,17 +101,18 @@
             body: JSON.stringify(data),
           })
             .then((response) => {
-              if (response.ok) {
-                // Redirect to /cart if cart is not empty, otherwise redirect to /
-                const redirectTo =
-                  (window.location.pathname === "/" && "/cart") || "/";
-                window.location.href = redirectTo;
-              } else {
-                throw new Error("Network response was not ok.");
-              }
+              window.location.href = "/cart";
             })
             .catch((error) => console.error("Error:", error));
         }
+
+        incrementButtons.forEach((button) => {
+          button.addEventListener("click", handleIncrement);
+        });
+
+        decrementButtons.forEach((button) => {
+          button.addEventListener("click", handleDecrement);
+        });
 
         removeButtons.forEach((button) => {
           button.addEventListener("click", handleRemove);
