@@ -185,7 +185,7 @@ app.get("/", async (req, res) => {
   });
 });
 // products page
-app.get("/products", async (req, res) => {
+app.get("/shop", async (req, res) => {
   const productdata = await get_all_products();
   let loggedin, user;
   if (req.session.userid) {
