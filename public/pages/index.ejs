@@ -21,16 +21,16 @@
     <link rel="stylesheet" href="../css/styles.css" />
 
     <style>
-      .header-slider ul{
+      .header-slider ul {
         display: flex;
         overflow-y: hidden;
       }
 
-      .header-img{
+      .header-img {
         max-width: 100%;
       }
 
-      .header-slider a{
+      .header-slider a {
         position: absolute;
         top: 20%;
         z-index: 1;
@@ -43,11 +43,11 @@
         cursor: pointer;
       }
 
-      .control-next{
+      .control-next {
         right: 0;
       }
 
-      .box-row{
+      .box-row {
         display: flex;
         flex-wrap: wrap;
         row-gap: 20px;
@@ -55,7 +55,7 @@
         margin: 20px 30px;
       }
 
-      .box-col{
+      .box-col {
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -63,17 +63,16 @@
         background: #fff;
         max-width: 22%;
         min-height: 200px;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
       }
 
-      .box-col a{
+      .box-col a {
         font-size: 14px;
         color: #009999;
         font-weight: 500;
         text-decoration: none;
-      } 
-
-    
+      }
     </style>
   </head>
   <body>
@@ -187,69 +186,67 @@
       <a href="#" class="control-prev">&#8592;</a>
       <a href="#" class="control-next">&#8594;</a>
       <ul>
-        <img src="../images/hero_image.jpg" alt="" class="header-img">
-        <img src="../images/banner_img.jpg" alt="" class="header-img">
-        <img src="../images/header1.jpg" alt="" class="header-img">
+        <img src="../images/hero_image.jpg" alt="" class="header-img" />
+        <img src="../images/banner_img.jpg" alt="" class="header-img" />
+        <img src="../images/header1.jpg" alt="" class="header-img" />
       </ul>
     </div>
 
     <div class="box-row">
       <div class="box-col">
         <h3>Electronics</h3>
-        <img src="../images/box3-4.jpg" alt="">
-        <a href="/">Shop More</a>
+        <img src="../images/box3-4.jpg" alt="" />
+        <a href="/shop/Electronics">Shop More</a>
       </div>
       <div class="box-col">
         <h3>Toys</h3>
-        <img src="../images/box1-3.jpg" alt="">
-        <a href="/">Shop More</a>
+        <img src="../images/box1-3.jpg" alt="" />
+        <a href="/shop/Toys">Shop More</a>
       </div>
       <div class="box-col">
         <h3>Clothing</h3>
-        <img src="../images/box2-4.jpg" alt="">
-        <a href="/">Shop More</a>
+        <img src="../images/box2-4.jpg" alt="" />
+        <a href="/shop/Clothing">Shop More</a>
       </div>
       <div class="box-col">
         <h3>Jewellery</h3>
-        <img src="../images/box1-2.jpg" alt="">
-        <a href="/">Shop More</a>
+        <img src="../images/box1-2.jpg" alt="" />
+        <a href="/shop/Jewellery">Shop More</a>
       </div>
     </div>
-    
-
 
     <script>
-      const imgs = document.querySelectorAll('.header-slider ul img');
-      const prev_btn = document.querySelector('.control-prev');
-      const next_btn = document.querySelector('.control-next');
+      const imgs = document.querySelectorAll(".header-slider ul img");
+      const prev_btn = document.querySelector(".control-prev");
+      const next_btn = document.querySelector(".control-next");
 
       let n = 0;
 
-      function changeSlide(){
-        for(let i = 0; i < imgs.length; i++){
-          imgs[i].style.display = 'none';
+      function changeSlide() {
+        for (let i = 0; i < imgs.length; i++) {
+          imgs[i].style.display = "none";
         }
-        imgs[n].style.display = 'block';
+        imgs[n].style.display = "block";
       }
       changeSlide();
 
-      prev_btn.addEventListener('click', (e)=>{
-        if(n > 0){
+      prev_btn.addEventListener("click", (e) => {
+        if (n > 0) {
           n--;
-        }else{
+        } else {
           n = imgs.length - 1;
         }
-        changeSlide(); 
-      })
+        changeSlide();
+      });
 
-      next_btn.addEventListener('click', (e)=>{
-        if(n < imgs.length - 1){
+      next_btn.addEventListener("click", (e) => {
+        if (n < imgs.length - 1) {
           n++;
-        }else{
+        } else {
           n = 0;
         }
-        changeSlide(); 
-      })
+        changeSlide();
+      });
     </script>
   </body>
 </html>
