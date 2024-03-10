@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="../css/styles.css" />
   </head>
   <style>
-    .btn{
+    /*.btn{
       font-size: 13px;
         color: #0891b2;
         padding: 10px 18px;
@@ -32,7 +32,7 @@
       }
 
       .single-product{
-        /*margin-top: 80px;*/
+        margin-top: 80px;
         padding: 80px;
       }
 
@@ -45,15 +45,161 @@
         margin: 20px 0;
         font-size: 22px;
         font-weight: bold;
+      }*/
+
+      .price-compare {
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 14px;
+        text-decoration: line-through;
+      }
+      /* Basic Styling */
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        font-family: "Roboto", sans-serif;
       }
 
+      .container_info {
+        max-width: 1200px;
+        margin: 0 auto;
+        margin-bottom: 500px;
+        padding: 15px;
+        display: flex;
+      }
+
+      /* Columns */
+      .left-column {
+        width: 65%;
+        position: relative;
+      }
+
+      .right-column {
+        width: 35%;
+        margin-top: 60px;
+      }
+
+      /* Left Column */
+      .left-column img {
+        width: 100%; /* Set the width to 100% */
+        height: auto; /* Maintain the aspect ratio */
+        max-width: 700px; /* Set a maximum width if needed */
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+
+      .left-column img.active {
+        opacity: 1;
+      }
+
+      /* Right Column */
+
+      /* Product Description */
+      .product-description {
+        border-bottom: 1px solid #e1e8ee;
+        margin-bottom: 20px;
+      }
+      .product-description span,
+      .product-description span a {
+        font-size: 12px;
+        color: #358ed7;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        text-decoration: none;
+      }
+      .product-description h1 {
+        font-weight: 300;
+        font-size: 52px;
+        color: #43484d;
+        letter-spacing: -2px;
+      }
+      .product-description p {
+        font-size: 16px;
+        font-weight: 300;
+        color: #86939e;
+        line-height: 24px;
+      }
+
+      /* Product Price */
+      .product-price {
+        display: flex;
+        align-items: center;
+      }
+
+      .product-price span {
+        font-size: 18px;
+        font-weight: 300;
+        color: #43474d;
+        margin-right: 20px;
+        margin-left: 10px;
+      }
+
+      .cart-btn {
+        margin-top: 10px;
+        display: inline-block;
+        background-color: #0891b2;
+        border-radius: 6px;
+        font-size: 16px;
+        color: #ffffff;
+        text-decoration: none;
+        padding: 12px 30px;
+        transition: all 0.5s;
+      }
+      .cart-btn:hover {
+        background-color: #0891b2;
+      }
+
+      .left-column,
+      .right-column {
+        margin-right: 5px;
+        margin-left: 5px;
+      }
+
+      /* Responsive */
+
+      /* Laptop / Desktops */
+      @media (min-width: 941px) {
+        .paddinglol {
+          padding: 300px;
+        }
+      }
+
+      /* mobiles */
+      @media (max-width: 940px) {
+        .container {
+          flex-direction: column;
+        }
+        .left-column,
+        .right-column {
+          width: 100%;
+        }
+
+        .left-column img {
+          width: 300px;
+          right: 0;
+          top: 50px;
+          left: initial;
+        }
+      }
+
+      @media (max-width: 535px) {
+        .left-column img {
+          width: 220px;
+          top: 50px;
+        }
+      }
       
+    
       
   </style>
   <body>
     <!--<%- navbar %>-->
 
-    <div class="container">
+    <!--<div class="container">
       <div class="small-container single-product">
         <div class="row">
           <div class="col-2">
@@ -72,6 +218,50 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>-->
+
+    <section class="container_info">
+      <!-- Left Column / Headphones Image -->
+      <div class="left-column">
+        <img
+          data-image="og_image"
+          class="active"
+          src="<%- product.image %>"
+          alt=""
+          style="width: 60%; height: 440px; padding-top: 40px;"
+        />
+      </div>
+
+      <div class="right-column">
+        <div class="product-description">
+          <span>
+            <a href="/<%- product.type %>" style="display: inline"
+              ><%- product.type %></a
+            >
+            /
+            <a
+              href="/<%- product.type %>/<%- product.category %>"
+              style="display: inline"
+              ><%- product.category %></a
+            >
+            / <%- product.name %>
+          </span>
+          <h1><%- product.name %></h1>
+          <p><%- product.description %></p>
+        </div>
+
+        <div class="product-description">
+          <p>$ <%- product.price %></p>
+        </div>
+
+        <div class="product-configuration">
+          <div class="product-price">
+            <a href="/" class="cart-btn" onclick="addToCart('<%= product.name %>')">
+              Add to Cart
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
   </body>
 </html>
