@@ -13,6 +13,21 @@
 }
 ```
 
+## features
+
+1. login & signup
+2. add to cart
+3. info about past order
+4. payment gateway [ shows qr code ( cant trace back payment success or not) ]
+5. new product add
+6. product info
+7. add comments
+8. diffrent login page for admin
+9. 404 error page [ page not found ]
+10. saves all images in imagebb server
+11. saves all data in mongodb
+12. runs express server in backend which fetches and sends all data to front end
+
 ## routes & api
 
 1. admin routes :
@@ -24,9 +39,9 @@
 
 [ routes ]
 
-- /admin - basicaly login page for admin which send data with post request to /login
-- /dashboard - after logic admin is redirected to this page
-- /admin_logout - it removes the save cookies of username and pass
+- /admin - basicaly login page for admin which send data with post request to /login and saves pass and username in cookie
+- /dashboard - after login admin is redirected to this page
+- /admin_logout - it removes the saved cookies of admin username and pass
 - /productadd - basically its page for admin to add new products to database
 
 2. public routes :
@@ -34,30 +49,28 @@
 [ routes ]
 
 - / - home page
-- /products - shows all products
 - /404 - error page of saying url is not found
 - /login - login page for users
 - /signup - signup page for users
-- /profile - shows user profile
+- /profile - shows user profile and past orders
+- /cart - shows users cart
 - /gateway - payment gateway
 - /product-info/:productname - shows info about products
+- /shop - shows all products
+- /shop/Electronics - shows all Electronics products
+- /shop/Toys - shows all Toys products
+- /shop/Clothing - shows all Clothing products
+- /shop/Jewellery - shows all Jewellery products
 
 [ api ]
 
 - /api/user/signup - handles signup requests
 - /api/user/login - handles login requests
-- /api/cart/add - handles cart add requests
-- /api/cart/remove - handles cart remove requests
+- /api/cart/update - handles cart add and remove requests
+- /api/comment/add - adds comments
 
-# common questions
+## Security
 
-## how we add product to database?
-
-1. we take input from user
-2. then upload that images to imagebb and we get a url to that image
-3. we save all info given by user to database including url
-
-## database fetch products
-
-1. we fetch all product from database and send it to page where we wanna use the data using ejs
-2. using html and ejs & loop we show all products
+1. stores userid in session for 1 day then delete that userid is fetched by database
+2. stores encrypted passwords in database
+3. check session userid to check if user is logged in or not
