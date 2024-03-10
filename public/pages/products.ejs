@@ -174,11 +174,11 @@
             if (productName.includes(searchText)) {
               item.style.visibility = "visible";
               item.style.position = "relative";
-              item.style.marginTop = "0"; // Reset the negative margin
+              item.style.marginTop = "0";
             } else {
               item.style.visibility = "hidden";
               item.style.position = "absolute";
-              item.style.marginTop = "-" + item.offsetHeight + "px"; // Collapse the space
+              item.style.marginTop = "-" + item.offsetHeight + "px";
             }
           });
         }
