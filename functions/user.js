@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const { userSchema } = require("../schema/user");
 const user = mongoose.model("User", userSchema);
-const { get_product_by_name } = require("./database");
+const { get_product_by_name, comment_add_db } = require("./database");
 //==================== functions ====================
 
 async function create_user(username, email, password) {
@@ -74,4 +74,39 @@ async function find_user(email, password) {
   }
   return userfound._id;
 }
+
+async function comment_add(user, productName, comment) {
+  const foundUser = await user.findById(userId);
+  if (!foundUser) {
+    throw new Error("User not found.");
+  }
+
+  const productDetails = await get_product_by_name(productName);
+  if (!productDetails) {
+    throw new Error("Product not found");
+  }
+  try {
+    const added = await comment_add_db(
+      productDetails._id,
+      foundUser._id,
+      foundUser.username,
+      comment
+    );
+  } catch (err) {
+    console.log(err);
+    throw new Error("something went wrong while adding comment..");
+  }
+}
+
+async function comment_remove(user, productName, commentID) {
+  const foundUser = await user.findById(userId);
+  if (!foundUser) {
+    throw new Error("User not found.");
+  }
+  const productDetails = await get_product_by_name(productName);
+  if (!productDetails) {
+    throw new Error("Product not found");
+  }
+}
+
 module.exports = { create_user, user_info, cart_update, find_user };
