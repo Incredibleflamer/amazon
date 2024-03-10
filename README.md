@@ -39,9 +39,9 @@
 
 [ routes ]
 
-- /admin - basicaly login page for admin which send data with post request to /login
-- /dashboard - after logic admin is redirected to this page
-- /admin_logout - it removes the save cookies of username and pass
+- /admin - basicaly login page for admin which send data with post request to /login and saves pass and username in cookie
+- /dashboard - after login admin is redirected to this page
+- /admin_logout - it removes the saved cookies of admin username and pass
 - /productadd - basically its page for admin to add new products to database
 
 2. public routes :
