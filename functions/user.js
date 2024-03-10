@@ -84,7 +84,7 @@ async function comment_add(user, productName, comment) {
   if (!productDetails) {
     throw new Error("Product not found");
   }
-  const commentstotal = productDetails?.comments?.length || 0;
+  const commentstotal = productDetails?.comments?.length + 1;
   try {
     await comment_add_db(
       productDetails._id,
@@ -100,10 +100,34 @@ async function comment_add(user, productName, comment) {
   }
 }
 
+async function clearUserCart(userid) {
+  try {
+    const foundUser = await user.findById(userid);
+    let total = 0,
+      totalitems = 0;
+    for (const item of foundUser.cart) {
+      total += item.amount;
+      totalitems += item.quantity;
+    }
+    const order = {
+      id: foundUser.orders.length + 1,
+      totalAmount: total,
+      product_details: foundUser.cart,
+      totalitems: totalitems,
+    };
+    foundUser.orders.push(order);
+    foundUser.cart = [];
+    await foundUser.save();
+    return;
+  } catch (error) {
+    throw error;
+  }
+}
 module.exports = {
   create_user,
   user_info,
   cart_update,
   find_user,
   comment_add,
+  clearUserCart,
 };

@@ -38,11 +38,34 @@
         text-decoration: none;
         top: -60px;
       }
+
+      /* Table styles */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
     </style>
   </head>
   <body>
     <%- navbar %>
-    <!--  -->
+    <!-- User banner and image -->
     <img
       id="userbannerdiv"
       style="object-fit: cover; background-color: transparent"
@@ -52,27 +75,25 @@
     <img src="https://picsum.photos/200/300/?blur=2" class="acc-userimg" />
     <a class="acc-username">@<%= user.username %></a>
     <br /><br />
-    <!-- orders -->
+    <!-- Orders -->
     <div>Orders:</div>
     <% if (user.orders && user.orders.length > 0) { %>
     <table>
       <thead>
         <tr>
-          <th>Order</th>
           <th>Order ID</th>
           <th>Progress</th>
           <th>Total Amount</th>
-          <th>Order Info</th>
+          <th>Total Items</th>
         </tr>
       </thead>
       <tbody>
-        <% user.orders.forEach((order, index) => { %>
+        <% user.orders.forEach(order => { %>
         <tr>
-          <td><%= index + 1 %></td>
           <td><%= order.id %></td>
           <td>In Progress</td>
           <td>$<%= order.totalAmount %></td>
-          <td>Soon..</td>
+          <td><%= order.totalitems %></td>
         </tr>
         <% }); %>
       </tbody>

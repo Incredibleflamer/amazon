@@ -29,7 +29,14 @@ const userSchema = new Schema(
         },
       },
     ],
-    orders: [{ id: { type: String }, totalAmount: { type: Number } }],
+    orders: [
+      {
+        id: { type: Number },
+        totalAmount: { type: Number },
+        totalitems: { type: Number },
+        product_details: [],
+      },
+    ],
   },
   { timestamps: true }
 );

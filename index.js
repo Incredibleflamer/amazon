@@ -31,6 +31,7 @@ const {
   cart_update,
   find_user,
   comment_add,
+  clearUserCart,
 } = require("./functions/user");
 //==================== setting up middle ware ====================
 app.use(bodyParser.json());
@@ -325,6 +326,10 @@ app.get("/gateway", async (req, res) => {
   } else {
     if (user?.cart.length >= 1) {
       res.render("pages/payment.ejs", { user: user });
+      // clear cart
+      setTimeout(async () => {
+        await clearUserCart(req.session.userid);
+      }, 1000);
     } else {
       res.redirect("/");
     }
