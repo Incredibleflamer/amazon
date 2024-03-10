@@ -4,7 +4,6 @@ const bcrypt = require("bcryptjs");
 const { userSchema } = require("../schema/user");
 const user = mongoose.model("User", userSchema);
 const { get_product_by_name, comment_add_db } = require("./database");
-const { add } = require("cheerio/lib/api/traversing");
 //==================== functions ====================
 
 async function create_user(username, email, password) {
