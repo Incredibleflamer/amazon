@@ -147,7 +147,7 @@ app.post("/api/user/login", async (req, res) => {
 app.post("/api/cart/update", async (req, res) => {
   userId = req.session.userid;
   if (!userId) {
-    return res.redirect("/login");
+    return res.status(501).json({ message: "you need to login" });
   }
   // userId = "65eacc1ad3fb4051d2c19513";
   const { productName, quantity } = req.body;
