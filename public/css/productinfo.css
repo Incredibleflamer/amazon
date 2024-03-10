@@ -1,0 +1,219 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+.container_info {
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-bottom: 50px;
+  padding: 15px;
+  display: flex;
+}
+
+/* Columns */
+.left-column {
+  width: 65%;
+  position: relative;
+}
+
+.right-column {
+  width: 35%;
+  margin-top: 60px;
+}
+
+/* Left Column */
+.left-column img {
+  width: 100%;
+  /* Set the width to 100% */
+  height: auto;
+  /* Maintain the aspect ratio */
+  max-width: 700px;
+  /* Set a maximum width if needed */
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.left-column img.active {
+  opacity: 1;
+}
+
+/* Right Column */
+
+/* Product Description */
+.product-description {
+  border-bottom: 1px solid #e1e8ee;
+  margin-bottom: 20px;
+}
+
+.product-description span,
+.product-description span a {
+  font-size: 12px;
+  color: #358ed7;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.product-description h1 {
+  font-weight: 300;
+  font-size: 52px;
+  color: #43484d;
+  letter-spacing: -2px;
+}
+
+.product-description p {
+  font-size: 16px;
+  font-weight: 300;
+  color: #86939e;
+  line-height: 24px;
+}
+
+/* Product Price */
+.product-price {
+  display: flex;
+  align-items: center;
+}
+
+.product-price span {
+  font-size: 18px;
+  font-weight: 300;
+  color: #43474d;
+  margin-right: 20px;
+  margin-left: 10px;
+}
+
+.cart-btn {
+  margin-top: 10px;
+  display: inline-block;
+  background-color: #0891b2;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 12px 30px;
+  transition: all 0.5s;
+}
+
+.cart-btn:hover {
+  background-color: #0891b2;
+}
+
+.left-column,
+.right-column {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+/* Responsive */
+
+/* Laptop / Desktops */
+@media (min-width: 941px) {
+  .paddinglol {
+    padding: 300px;
+  }
+}
+
+/* mobiles */
+@media (max-width: 940px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .left-column,
+  .right-column {
+    width: 100%;
+  }
+
+  .left-column img {
+    width: 300px;
+    right: 0;
+    top: 50px;
+    left: initial;
+  }
+}
+
+@media (max-width: 535px) {
+  .left-column img {
+    width: 220px;
+    top: 50px;
+  }
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.comment {
+  background: #f5f5f5;
+  padding: 2rem;
+  max-width: 670px;
+  width: 100%;
+  border-radius: 0.75rem;
+}
+.comment h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+textarea {
+  width: 95%;
+  background: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  outline: none;
+  resize: none;
+  margin-bottom: 0.5rem;
+}
+
+.btn-group {
+  display: flex;
+  grid-gap: 0.5rem;
+  align-items: center;
+}
+
+.btn-group .btn {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  outline: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.btn-group .btn-submit {
+  background: #0891b2;
+  color: white;
+}
+
+.btn-group .btn-submit:hover {
+  background: #066d87;
+  color: rgb(208, 206, 206);
+  cursor: pointer;
+}
+
+.btn-group .btn-cancel {
+  color: #0891b2;
+  background: white;
+}
+
+.btn-group .btn-cancel:hover {
+  background: rgb(208, 206, 206);
+  color: #066d87;
+  cursor: pointer;
+}
+.price-compare {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 14px;
+  text-decoration: line-through;
+}
