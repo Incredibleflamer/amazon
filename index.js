@@ -205,6 +205,91 @@ app.get("/shop", async (req, res) => {
     navbar: res.locals.navbar,
   });
 });
+// Electronics Page
+app.get("/shop/Electronics", async (req, res) => {
+  const productdata = await get_products_by_category("electronics");
+  let loggedin, user;
+  if (req.session.userid) {
+    user = await user_info(req.session.userid);
+    if (user) {
+      loggedin = true;
+    } else {
+      loggedin = false;
+    }
+  } else {
+    loggedin = false;
+  }
+  res.render("pages/products.ejs", {
+    products: productdata,
+    loggedin: loggedin,
+    user: user,
+    navbar: res.locals.navbar,
+  });
+});
+// Toys page
+app.get("/shop/Toys", async (req, res) => {
+  const productdata = await get_products_by_category("toys_games");
+  let loggedin, user;
+  if (req.session.userid) {
+    user = await user_info(req.session.userid);
+    if (user) {
+      loggedin = true;
+    } else {
+      loggedin = false;
+    }
+  } else {
+    loggedin = false;
+  }
+  res.render("pages/products.ejs", {
+    products: productdata,
+    loggedin: loggedin,
+    user: user,
+    navbar: res.locals.navbar,
+  });
+});
+// Clothing page
+app.get("/shop/Clothing", async (req, res) => {
+  const productdata = await get_products_by_category("clothing");
+  let loggedin, user;
+  if (req.session.userid) {
+    user = await user_info(req.session.userid);
+    if (user) {
+      loggedin = true;
+    } else {
+      loggedin = false;
+    }
+  } else {
+    loggedin = false;
+  }
+  res.render("pages/products.ejs", {
+    products: productdata,
+    loggedin: loggedin,
+    user: user,
+    navbar: res.locals.navbar,
+  });
+});
+// Jewellery page
+app.get("/shop/Jewellery", async (req, res) => {
+  const productdata = await get_products_by_category("jewelery");
+  let loggedin, user;
+  if (req.session.userid) {
+    user = await user_info(req.session.userid);
+    if (user) {
+      loggedin = true;
+    } else {
+      loggedin = false;
+    }
+  } else {
+    loggedin = false;
+  }
+  res.render("pages/products.ejs", {
+    products: productdata,
+    loggedin: loggedin,
+    user: user,
+    navbar: res.locals.navbar,
+  });
+});
+// payment gateway
 app.get("/gateway", async (req, res) => {
   let loggedin, user;
   if (req.session.userid) {
