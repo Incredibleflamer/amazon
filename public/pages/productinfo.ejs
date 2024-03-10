@@ -32,11 +32,13 @@
       }
 
       .single-product{
-        margin-top: 80px;
+        /*margin-top: 80px;*/
+        padding: 80px;
       }
 
       .single-product .col-2 img{
         padding: 20px;
+        height: 50%;
       }
 
       .single-product h4{
@@ -55,14 +57,17 @@
       }
   </style>
   <body>
-    <%- navbar %>
+    <!--<%- navbar %>-->
 
     <div class="container">
       <div class="small-container single-product">
         <div class="row">
           <div class="col-2">
-            <img src="" alt="">
-          </div>
+            <img
+              src="<%= product.image %>"
+              alt="<%= product.image %>"
+              class="product_image"
+            />
           <div class="col-2">
             <h1><%= product.name %></h1>
             <h4>$<%= product.price %></h4>
