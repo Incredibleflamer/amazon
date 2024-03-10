@@ -15,43 +15,40 @@
     <link rel="stylesheet" href="../css/styles.css" />
   </head>
   <style>
-    .btn{
+    .btn {
       font-size: 13px;
-        color: #0891b2;
-        padding: 10px 18px;
-        font-weight: 900;
-        border: 1px solid #0891b2;
-        border-radius: 20px;
-        text-decoration: none;
+      color: #0891b2;
+      padding: 10px 18px;
+      font-weight: 900;
+      border: 1px solid #0891b2;
+      border-radius: 20px;
+      text-decoration: none;
     }
 
-    .btn:hover{
-        cursor: pointer;
-        background-color: #0891b2;
-        color: white;
-      }
+    .btn:hover {
+      cursor: pointer;
+      background-color: #0891b2;
+      color: white;
+    }
 
-      .single-product{
-        /*margin-top: 80px;*/
-        padding: 80px;
-      }
+    .single-product {
+      /*margin-top: 80px;*/
+      padding: 80px;
+    }
 
-      .single-product .col-2 img{
-        padding: 20px;
-        height: 50%;
-      }
+    .single-product .col-2 img {
+      padding: 20px;
+      height: 50%;
+    }
 
-      .single-product h4{
-        margin: 20px 0;
-        font-size: 22px;
-        font-weight: bold;
-      }
-
-      
-      
+    .single-product h4 {
+      margin: 20px 0;
+      font-size: 22px;
+      font-weight: bold;
+    }
   </style>
   <body>
-    <!--<%- navbar %>-->
+    <%- navbar %>
 
     <div class="container">
       <div class="small-container single-product">
@@ -62,16 +59,47 @@
               alt="<%= product.image %>"
               class="product_image"
             />
-          <div class="col-2">
-            <h1><%= product.name %></h1>
-            <h4>$<%= product.price %></h4>
-            
-            <a href="" class="btn">Add to Cart</a>
-            <h3>Product Details</h3>
-            <p>Apple 2023 MacBook Air (15-inch, M2 chip with 8‑core CPU and 10‑core GPU, 8GB Unified Memory, 256GB) - Midnight MacBook Air makes room for more of what you love with a spacious Liquid Retina display. The durable 100% recycled aluminium enclosure is strikingly thin and light.</p>
+            <div class="col-2">
+              <h1><%= product.name %></h1>
+              <h4>$<%= product.price %></h4>
+
+              <a class="btn" onclick="addToCart('<%= product.name %>')"
+                >Add to Cart</a
+              >
+              <h3>Product Details</h3>
+              <p><%= product.description %></p>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <script>
+      //  function to add to cart
+      function addToCart(productName) {
+        fetch("/api/cart/update", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            quantity: 1,
+            productName: productName,
+          }),
+        })
+          .then((response) => {
+            console.log(response);
+            if (response.ok) {
+              alert("Product added to cart successfully!");
+            } else if (response.status === 501) {
+              alert("you need to login first");
+            } else {
+              alert("Failed to add product to cart.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error adding product to cart:", error);
+          });
+      }
+    </script>
   </body>
 </html>
