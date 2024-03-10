@@ -68,10 +68,31 @@ async function get_product_by_name(name) {
 async function get_products_by_category(category) {
   return await Product.find({ category });
 }
+async function comment_add_db(productid, userid, username, comment) {
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productid,
+      {
+        $push: {
+          comments: {
+            userid: userid,
+            username: username,
+            comment: comment,
+          },
+        },
+      },
+      { new: true }
+    );
+    return updatedProduct;
+  } catch (error) {
+    throw error;
+  }
+}
 //==================== exports ====================
 module.exports = {
   product_add,
   get_all_products,
   get_product_by_name,
   get_products_by_category,
+  comment_add_db,
 };

@@ -162,6 +162,40 @@ app.post("/api/cart/update", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+// api for comments add
+app.post("/api/comment/add", async (req, res) => {
+  userId = req.session.userid;
+  if (!userId) {
+    return res.status(501).json({ message: "you need to login" });
+  }
+  const { productName, comment } = req.body;
+  try {
+    const newamount = await cart_update(userId, productName, quantitynumber);
+    res.status(200).json({
+      message: "Item added to cart successfully.",
+      newamount: newamount,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+// api for comments remove
+app.post("/api/comment/add", async (req, res) => {
+  userId = req.session.userid;
+  if (!userId) {
+    return res.status(501).json({ message: "you need to login" });
+  }
+  const { productName, commentID } = req.body;
+  try {
+    const newamount = await cart_update(userId, productName, quantitynumber);
+    res.status(200).json({
+      message: "Item added to cart successfully.",
+      newamount: newamount,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 //==================== public page routes ====================
 // main page
 app.get("/", async (req, res) => {
