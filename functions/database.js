@@ -68,26 +68,33 @@ async function get_product_by_name(name) {
 async function get_products_by_category(category) {
   return await Product.find({ category });
 }
-async function comment_add_db(productid, userid, username, comment) {
+
+async function comment_add_db(
+  productid,
+  commentstotal,
+  userid,
+  username,
+  comment
+) {
   try {
-    const updatedProduct = await Product.findByIdAndUpdate(
-      productid,
-      {
-        $push: {
-          comments: {
-            userid: userid,
-            username: username,
-            comment: comment,
-          },
-        },
-      },
-      { new: true }
-    );
+    const product = await Product.findById(productid);
+
+    if (!product) {
+      throw new Error("Product not found");
+    }
+    product.comments.push({
+      userid: userid,
+      username: username,
+      comment: comment,
+      commentid: commentstotal,
+    });
+    const updatedProduct = await product.save();
     return updatedProduct;
   } catch (error) {
     throw error;
   }
 }
+
 //==================== exports ====================
 module.exports = {
   product_add,

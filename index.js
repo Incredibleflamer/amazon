@@ -30,6 +30,7 @@ const {
   user_info,
   cart_update,
   find_user,
+  comment_add,
 } = require("./functions/user");
 //==================== setting up middle ware ====================
 app.use(bodyParser.json());
@@ -170,27 +171,9 @@ app.post("/api/comment/add", async (req, res) => {
   }
   const { productName, comment } = req.body;
   try {
-    const newamount = await cart_update(userId, productName, quantitynumber);
+    await comment_add(userId, productName, comment);
     res.status(200).json({
-      message: "Item added to cart successfully.",
-      newamount: newamount,
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-// api for comments remove
-app.post("/api/comment/add", async (req, res) => {
-  userId = req.session.userid;
-  if (!userId) {
-    return res.status(501).json({ message: "you need to login" });
-  }
-  const { productName, commentID } = req.body;
-  try {
-    const newamount = await cart_update(userId, productName, quantitynumber);
-    res.status(200).json({
-      message: "Item added to cart successfully.",
-      newamount: newamount,
+      message: "Comment added successfully.",
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
