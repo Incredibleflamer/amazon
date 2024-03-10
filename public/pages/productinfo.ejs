@@ -30,21 +30,51 @@
         background-color: #0891b2;
         color: white;
       }
+
+      .single-product{
+        /*margin-top: 80px;*/
+        padding: 80px;
+      }
+
+      .single-product .col-2 img{
+        padding: 20px;
+        height: 50%;
+      }
+
+      .single-product h4{
+        margin: 20px 0;
+        font-size: 22px;
+        font-weight: bold;
+      }
+
+      .single-product input{
+        width: 50px;
+        height: 40px;
+        padding-left: 10px;
+        font-size: 20px;
+        margin-right: 10px;
+        border: 1px solid #0891b2;
+      }
   </style>
   <body>
-    <%- navbar %>
+    <!--<%- navbar %>-->
 
     <div class="container">
-      <div class="small-container">
+      <div class="small-container single-product">
         <div class="row">
           <div class="col-2">
-            <img src="" alt="">
-          </div>
+            <img
+              src="<%= product.image %>"
+              alt="<%= product.image %>"
+              class="product_image"
+            />
           <div class="col-2">
             <h1><%= product.name %></h1>
             <h4>$<%= product.price %></h4>
             <input type="number" value="1">
             <a href="" class="btn">Add to Cart</a>
+            <h3>Product Details</h3>
+            <p>Apple 2023 MacBook Air (15-inch, M2 chip with 8‑core CPU and 10‑core GPU, 8GB Unified Memory, 256GB) - Midnight MacBook Air makes room for more of what you love with a spacious Liquid Retina display. The durable 100% recycled aluminium enclosure is strikingly thin and light.</p>
           </div>
         </div>
       </div>
