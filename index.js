@@ -171,12 +171,14 @@ app.post("/api/comment/add", async (req, res) => {
     return res.status(501).json({ message: "you need to login" });
   }
   const { productName, comment } = req.body;
+
   try {
     await comment_add(userId, productName, comment);
     res.status(200).json({
       message: "Comment added successfully.",
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err.message });
   }
 });

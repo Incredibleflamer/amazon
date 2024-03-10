@@ -75,8 +75,8 @@ async function find_user(email, password) {
   return userfound._id;
 }
 
-async function comment_add(user, productName, comment) {
-  const foundUser = await user.findById(userId);
+async function comment_add(userid, productName, comment) {
+  const foundUser = await user.findById(userid);
   if (!foundUser) {
     throw new Error("User not found.");
   }
