@@ -56,6 +56,7 @@ hr {
 
 .list-non-bullet{
     list-style: none;
+    position: relative;
 }
 
 .list-item-inline{
@@ -175,4 +176,53 @@ hr {
 .box-content{
     margin-left: 1rem;
     margin-right: 1rem;
+}
+
+/*ul li ul.dropdown li{
+   display: block; 
+}
+
+ul li ul.dropdown{
+    width: 100%;
+    background: ;
+    position: absolute;
+    z-index: 999;
+    display: none;
+}
+
+ul li a:hover{
+    background: #066d87;
+}
+
+ul li:hover ul.dropdown{
+    display: block;
+}*/
+
+.dropdown{
+    display: none;
+}
+
+ul li:hover .dropdown{
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #0891b2;
+    text-align: left;
+}
+
+.dropdown ul{
+    display: block;
+    margin: 10px;
+    list-style: none;
+}
+
+.dropdown ul li{
+    width: 150px;
+    padding: 10px;
+}
+
+.dropdown li:hover{
+    color: white;
+    font-weight: bold;
 }
