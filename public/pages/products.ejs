@@ -158,18 +158,30 @@
         var searchText = document
           .getElementById("searchInput")
           .value.toLowerCase();
-
         var productNames = document.querySelectorAll(".product_name");
 
-        productNames.forEach((productNameElement) => {
-          var productName = productNameElement.textContent.toLowerCase();
-          var item = productNameElement.closest(".items");
-          if (productName.includes(searchText)) {
-            item.style.display = "block";
-          } else {
-            item.style.display = "none";
-          }
-        });
+        if (searchText === "") {
+          productNames.forEach((productNameElement) => {
+            var item = productNameElement.closest(".products");
+            item.style.visibility = "visible";
+            item.style.position = "relative";
+            item.style.marginTop = "0"; // Reset the negative margin
+          });
+        } else {
+          productNames.forEach((productNameElement) => {
+            var productName = productNameElement.textContent.toLowerCase();
+            var item = productNameElement.closest(".products");
+            if (productName.includes(searchText)) {
+              item.style.visibility = "visible";
+              item.style.position = "relative";
+              item.style.marginTop = "0"; // Reset the negative margin
+            } else {
+              item.style.visibility = "hidden";
+              item.style.position = "absolute";
+              item.style.marginTop = "-" + item.offsetHeight + "px"; // Collapse the space
+            }
+          });
+        }
       }
 
       document
